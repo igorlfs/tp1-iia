@@ -1,4 +1,5 @@
 #include "bfs.hpp"
+#include "ids.hpp"
 #include <cassert>
 #include <sstream>
 
@@ -56,6 +57,8 @@ int main(int argc, char *argv[]) {
     Path path;
     if (algorithm == "BFS") {
         path = bfs(M, init, goal);
+    } else if (algorithm == "IDS") {
+        path = ids(M, init, goal);
     }
     print_path(path);
 
