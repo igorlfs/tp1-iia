@@ -1,7 +1,6 @@
 #include "bfs.hpp"
 
 Path bfs(matrix &M, coords &init, coords &goal) {
-    const vector<coords> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     vector<vector<bool>> visited(W, vector<bool>(H));
     vector<vector<coords>> parent(W, vector<coords>(H, {-1, -1}));
     queue<coords> q;
@@ -30,7 +29,7 @@ Path bfs(matrix &M, coords &init, coords &goal) {
             return make_pair(path, cost);
         }
 
-        for (const auto &[dx, dy] : directions) {
+        for (const auto &[dx, dy] : DIRECTIONS) {
             int new_x = current.fi + dx;
             int new_y = current.se + dy;
 
