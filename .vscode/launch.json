@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch CodeLLDB",
+            "type": "codelldb",
+            "request": "launch",
+            "preLaunchTask": "Compile",
+            "expressions": "native",
+            "program": "bin",
+            "args": [
+                "./mapas/mapa_teste.map",
+                "BFS",
+                "1",
+                "1",
+                "3",
+                "1"
+            ]
+        }
+    ]
+}

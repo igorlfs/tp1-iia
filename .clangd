@@ -1,0 +1,38 @@
+CompileFlags:
+  Add: [-std=c++17]
+Diagnostics:
+  ClangTidy:
+    Add:
+      [
+        bugprone*,
+        cppcoreguidelines*,
+        misc*,
+        modernize*,
+        performance*,
+        portability*,
+        readability*,
+      ]
+    Remove: 
+      [
+        modernize-use-trailing-return-type,
+        misc-use-internal-linkage,
+        cppcoreguidelines-avoid-non-const-global-variables,
+        cppcoreguidelines-pro-bounds-pointer-arithmetic,
+        readability-identifier-length,
+        bugprone-easily-swappable-parameters,
+        cppcoreguidelines-avoid-magic-numbers,
+        readability-magic-numbers,
+        # cppcoreguidelines-init-variables,
+        # misc-no-recursion,
+        # misc-non-private-member-variables-in-classes,
+        # modernize-use-nodiscard,
+        # readability-braces-around-statements,
+        # readability-function-cognitive-complexity
+        # readability-identifier-length,
+        # readability-isolate-declaration,
+      ]
+    CheckOptions:
+      readability-identifier-naming.FunctionCase: lower_case
+      readability-identifier-naming.GlobalConstantCase: UPPER_CASE
+      readability-identifier-naming.VariableCase: lower_case
+      readability-identifier-naming.VariableIgnoredRegexp: "[A-Z]"
