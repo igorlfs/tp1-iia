@@ -4,7 +4,7 @@ CXXFLAGS=-std=c++20 -glldb -fstandalone-debug -Wall -Wextra
 EXE=bin
 EXE_TEST=test
 
-COMMON_SRC_FILES=src/ids.cpp src/bfs.cpp 
+COMMON_SRC_FILES=src/ids.cpp src/bfs.cpp src/ucs.cpp
 SRC_FILES=$(COMMON_SRC_FILES) src/main.cpp
 TEST_SRC_FILES=$(COMMON_SRC_FILES) src/test_algorithms.cpp
 

@@ -1,5 +1,6 @@
 #include "bfs.hpp"
 #include "ids.hpp"
+#include "ucs.hpp"
 #include <cassert>
 #include <sstream>
 
@@ -59,6 +60,8 @@ int main(int argc, char *argv[]) {
         path = bfs(M, init, goal);
     } else if (algorithm == "IDS") {
         path = ids(M, init, goal);
+    } else if (algorithm == "UCS") {
+        path = ucs(M, init, goal);
     }
     print_path(path);
 
