@@ -11,6 +11,8 @@ using matrix = vector<vector<double>>;
 using coords = pair<int, int>;
 using Path = pair<vector<coords>, double>;
 
+using State = pair<double, pair<coords, vector<coords>>>;
+
 constexpr int INF = 0x3f3f3f3f;
 
 const vector<coords> DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};

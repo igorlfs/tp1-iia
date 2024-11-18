@@ -1,7 +1,5 @@
 #include "ucs.hpp"
 
-using State = pair<double, pair<coords, vector<coords>>>;
-
 Path ucs(matrix &M, coords &init, coords &goal) {
     priority_queue<State, vector<State>, greater<>> pq;
     set<coords> visited;
@@ -32,6 +30,7 @@ Path ucs(matrix &M, coords &init, coords &goal) {
             if (is_within_bounds(new_x, new_y) && M.at(new_x).at(new_y) != INF) {
                 double new_cost = current_cost + M.at(new_x).at(new_y);
                 vector<coords> new_path = current_path;
+
                 new_path.emplace_back(new_x, new_y);
 
                 pq.push({new_cost, {{new_x, new_y}, new_path}});

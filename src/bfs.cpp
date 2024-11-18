@@ -3,41 +3,39 @@
 Path bfs(matrix &M, coords &init, coords &goal) {
     vector<vector<bool>> visited(W, vector<bool>(H));
     vector<vector<coords>> parent(W, vector<coords>(H, {-1, -1}));
-    queue<coords> q;
+    queue<State> q;
 
-    q.push(init);
+    q.push({0.0, {init, {init}}});
 
     visited.at(init.fi).at(init.se) = true;
 
     while (!q.empty()) {
-        coords current = q.front();
+        auto [current_cost, state] = q.front();
+        auto [current_coords, current_path] = state;
         q.pop();
 
-        if (current == goal) {
-            vector<coords> path;
-            double cost = 0.0;
-            coords step = goal;
-            while (step != init) {
-                cost += M.at(step.fi).at(step.se);
-                path.push_back(step);
-                step = parent.at(step.fi).at(step.se);
-            }
-            path.push_back(init);
-
-            reverse(path.begin(), path.end());
-
-            return make_pair(path, cost);
+        if (current_coords == goal) {
+            return {current_path, current_cost};
         }
 
+        int x = current_coords.fi;
+        int y = current_coords.se;
         for (const auto &[dx, dy] : DIRECTIONS) {
-            int new_x = current.fi + dx;
-            int new_y = current.se + dy;
+            int new_x = x + dx;
+            int new_y = y + dy;
 
             if (is_within_bounds(new_x, new_y) && !visited.at(new_x).at(new_y) &&
                 M.at(new_x).at(new_y) != INF) {
                 visited.at(new_x).at(new_y) = true;
-                q.emplace(new_x, new_y);
-                parent.at(new_x).at(new_y) = current;
+
+                double new_cost = current_cost + M.at(new_x).at(new_y);
+                vector<coords> new_path = current_path;
+
+                new_path.emplace_back(new_x, new_y);
+
+                q.push({new_cost, {{new_x, new_y}, new_path}});
+
+                parent.at(new_x).at(new_y) = current_coords;
             }
         }
     }
