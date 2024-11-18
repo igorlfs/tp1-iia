@@ -16,7 +16,10 @@ build:
 test:
 	$(CXX) $(CXXFLAGS) -o $(EXE_TEST) -lgtest $(TEST_SRC_FILES)
 
+ci:
+	g++ -std=c++20 -o $(EXE_TEST) -lgtest $(TEST_SRC_FILES)
+
 clean:
 	rm $(EXE_TEST) $(EXE)
 
-.PHONY: all build clean test
+.PHONY: all build clean test ci

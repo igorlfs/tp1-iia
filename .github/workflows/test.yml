@@ -15,6 +15,6 @@ jobs:
       - name: install gtest
         run: sudo apt-get install libgtest-dev
       - name: build
-        run: make test
+        run: make ci
       - name: run
         run: ./test
