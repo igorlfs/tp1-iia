@@ -2,7 +2,6 @@
 
 Path bfs(matrix &M, coords &init, coords &goal) {
     vector<vector<bool>> visited(W, vector<bool>(H));
-    vector<vector<coords>> parent(W, vector<coords>(H, {-1, -1}));
     queue<State> q;
 
     q.push({0.0, {init, {init}}});
@@ -20,6 +19,7 @@ Path bfs(matrix &M, coords &init, coords &goal) {
 
         int x = current_coords.fi;
         int y = current_coords.se;
+
         for (const auto &[dx, dy] : DIRECTIONS) {
             int new_x = x + dx;
             int new_y = y + dy;
@@ -34,8 +34,6 @@ Path bfs(matrix &M, coords &init, coords &goal) {
                 new_path.emplace_back(new_x, new_y);
 
                 q.push({new_cost, {{new_x, new_y}, new_path}});
-
-                parent.at(new_x).at(new_y) = current_coords;
             }
         }
     }
