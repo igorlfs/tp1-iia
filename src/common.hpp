@@ -7,11 +7,11 @@
 
 using namespace std;
 
-using matrix = vector<vector<double>>;
+template <typename T> using matrix = vector<vector<T>>;
 using coords = pair<int, int>;
 using Path = pair<vector<coords>, double>;
 
-using State = pair<double, pair<coords, vector<coords>>>;
+using State = pair<double, coords>;
 
 constexpr int INF = 0x3f3f3f3f;
 
@@ -25,7 +25,7 @@ inline bool is_within_bounds(int x, int y) {
     return x >= 0 && x < W && y >= 0 && y < H;
 }
 
-inline vector<coords> rebuild_path(coords goal, coords init, vector<vector<coords>> &parent) {
+inline vector<coords> rebuild_path(coords goal, coords init, matrix<coords> &parent) {
     vector<coords> path;
 
     for (coords step = goal; step != init;) {

@@ -2,4 +2,4 @@
 
 #include "common.hpp"
 
-Path ucs(matrix &M, coords &init, coords &goal);
+Path ucs(matrix<double> &M, coords &init, coords &goal);

@@ -1,9 +1,9 @@
 #include "bfs.hpp"
 
-Path bfs(matrix &M, coords &init, coords &goal) {
-    vector<vector<bool>> visited(W, vector<bool>(H));
-    queue<pair<double, coords>> q;
-    vector<vector<coords>> parent(W, vector<coords>(H, {-1, -1}));
+Path bfs(matrix<double> &M, coords &init, coords &goal) {
+    matrix<bool> visited(W, vector<bool>(H));
+    queue<State> q;
+    matrix<coords> parent(W, vector<coords>(H, {-1, -1}));
 
     q.push({0.0, {init}});
 

@@ -10,7 +10,7 @@ map<char, double> terrain_cost_map = {{'.', 1.0}, {';', 1.5}, {'+', 2.5}, {'x', 
 
 int W, H;
 
-matrix read_matrix(ifstream &input_file) {
+matrix<double> read_matrix(ifstream &input_file) {
     string line;
     getline(input_file, line);
 
@@ -19,7 +19,7 @@ matrix read_matrix(ifstream &input_file) {
         stream >> W >> H;
     }
 
-    matrix M(W, vector<double>(H));
+    matrix<double> M(W, vector<double>(H));
 
     char c = 0;
     for (int i = 0; getline(input_file, line) and i < H; ++i) {
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
     ifstream input_file(argv[1]);
 
-    matrix M = read_matrix(input_file);
+    matrix<double> M = read_matrix(input_file);
 
     coords init = {atoi(argv[3]), atoi(argv[4])};
     assert(init.fi < W && init.se < H);

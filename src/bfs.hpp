@@ -2,4 +2,4 @@
 
 #include "common.hpp"
 
-Path bfs(matrix &M, coords &init, coords &goal);
+Path bfs(matrix<double> &M, coords &init, coords &goal);

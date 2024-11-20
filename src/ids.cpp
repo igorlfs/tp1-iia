@@ -1,6 +1,6 @@
 #include "ids.hpp"
 
-Path ids(matrix &M, coords &init, coords &goal) {
+Path ids(matrix<double> &M, coords &init, coords &goal) {
     int upper_bound_search_depth = W * H;
 
     for (int depth = 0; depth <= upper_bound_search_depth; depth++) {
@@ -12,10 +12,10 @@ Path ids(matrix &M, coords &init, coords &goal) {
     throw runtime_error(NO_PATH_FOUND_MESSAGE);
 }
 
-optional<Path> dls(matrix &M, coords &init, coords &goal, int max_depth) {
-    vector<vector<bool>> visited(W, vector<bool>(H));
+optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth) {
+    matrix<bool> visited(W, vector<bool>(H));
     stack<tuple<int, double, coords>> stk;
-    vector<vector<coords>> parent(W, vector<coords>(H, {-1, -1}));
+    matrix<coords> parent(W, vector<coords>(H, {-1, -1}));
 
     stk.emplace(0, 0.0, init);
 

@@ -1,10 +1,10 @@
-#include "bfs.hpp"
+#include "ucs.hpp"
 #include "gmock/gmock.h"
 #include <gtest/gtest.h>
 
 using namespace testing;
 
-TEST(bfs, Simple) {
+TEST(ucs, Simple) {
     W = 5;
     H = 3;
     matrix<double> m = {
@@ -19,15 +19,15 @@ TEST(bfs, Simple) {
 
     assert(goal.fi < W && goal.se < H);
 
-    constexpr double expected_cost = 7.0;
-    const vector<coords> expected_path = {{1, 1}, {2, 1}, {3, 1}};
+    constexpr double expected_cost = 4.5;
+    const vector<coords> expected_path = {{1, 1}, {1, 2}, {2, 2}, {3, 2}, {3, 1}};
 
-    Path path = bfs(m, init, goal);
+    Path path = ucs(m, init, goal);
 
     EXPECT_EQ(expected_cost, path.second);
 }
 
-TEST(bfs, Death) {
+TEST(ucs, Death) {
     W = 5;
     H = 3;
     matrix<double> m = {
@@ -35,5 +35,5 @@ TEST(bfs, Death) {
     };
     coords init = {1, 1};
     coords goal = {3, 1};
-    EXPECT_THAT([&]() { bfs(m, init, goal); }, ThrowsMessage<runtime_error>(NO_PATH_FOUND_MESSAGE));
+    EXPECT_THAT([&]() { ucs(m, init, goal); }, ThrowsMessage<runtime_error>(NO_PATH_FOUND_MESSAGE));
 }

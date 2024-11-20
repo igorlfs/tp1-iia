@@ -1,6 +1,6 @@
 #include "ucs.hpp"
 
-Path ucs(matrix &M, coords &init, coords &goal) {
+Path ucs(matrix<double> &M, coords &init, coords &goal) {
     priority_queue<State, vector<State>, greater<>> pq;
     set<coords> visited;
 

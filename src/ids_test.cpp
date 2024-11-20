@@ -10,7 +10,7 @@ TEST(dls, InitEqualsGoal) {
     coords init;
     coords goal;
     init = goal = {1, 1};
-    matrix m = {
+    matrix<double> m = {
         {INF, INF, INF},
         {INF, 1.0, INF},
         {INF, INF, INF},
@@ -31,7 +31,7 @@ TEST(dls, cantFindDeepGoal) {
     H = 3;
     coords init = {1, 1};
     coords goal = {1, 2};
-    matrix m = {
+    matrix<double> m = {
         {INF, INF, INF},
         {INF, 1.0, 1.0},
         {INF, INF, INF},
@@ -47,7 +47,7 @@ TEST(dls, canFindDepthOne) {
     H = 3;
     coords init = {1, 1};
     coords goal = {1, 2};
-    matrix m = {
+    matrix<double> m = {
         {INF, INF, INF},
         {INF, 1.0, 1.0},
         {INF, INF, INF},
@@ -68,7 +68,7 @@ TEST(dls, canFindDepthTwo) {
     H = 3;
     coords init = {0, 0};
     coords goal = {0, 2};
-    matrix m = {
+    matrix<double> m = {
         {1.0, 1.0, 1.0},
         {1.5, 1.0, 1.0},
         {1.0, 1.0, 1.0},
@@ -89,7 +89,7 @@ TEST(dls, canDodgeObstacle) {
     H = 3;
     coords init = {1, 0};
     coords goal = {1, 2};
-    matrix m = {
+    matrix<double> m = {
         {1.5, 1.0, 1.5},
         {1.0, INF, 1.0},
         {1.0, 1.5, 1.0},
@@ -108,7 +108,7 @@ TEST(dls, canDodgeObstacle) {
 TEST(ids, Simple) {
     W = 5;
     H = 3;
-    matrix m = {
+    matrix<double> m = {
         {INF, INF, INF}, {2.5, 1.0, 1.0}, {2.5, 6.0, 1.5}, {2.5, 1.0, 1.0}, {INF, INF, INF},
     };
 
@@ -127,7 +127,7 @@ TEST(ids, Death) {
     W = 5;
     H = 3;
 
-    matrix m = {
+    matrix<double> m = {
         {INF, INF, INF}, {INF, 1.0, INF}, {INF, INF, INF}, {2.5, 1.0, 1.0}, {INF, INF, INF},
     };
     coords init = {1, 1};
