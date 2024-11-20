@@ -43,21 +43,22 @@ void print_path(Path &path) {
 
 int main(int argc, char *argv[]) {
     assert(argc == NUM_ARGS);
+    vector<string> args(argv, argv + argc);
 
-    ifstream input_file(argv[1]);
+    ifstream input_file(args.at(1));
 
     matrix<double> M = read_matrix(input_file);
 
-    coords init = {atoi(argv[3]), atoi(argv[4])};
+    coords init = {stoi(args.at(3)), stoi(args.at(4))};
     assert(init.fi < W && init.se < H);
-    coords goal = {atoi(argv[5]), atoi(argv[6])};
+    coords goal = {stoi(args.at(5)), stoi(args.at(6))};
     assert(goal.fi < W && goal.se < H);
 
     // Agent can never be at an invalid position
     assert(M[init.fi][init.se] != INF);
     assert(M[goal.fi][goal.se] != INF);
 
-    string algorithm = argv[2];
+    string algorithm = args.at(2);
 
     Path path;
     if (algorithm == "BFS") {
