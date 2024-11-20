@@ -6,7 +6,8 @@ EXE_TEST=test
 
 COMMON_SRC_FILES=src/ids.cpp src/bfs.cpp src/ucs.cpp
 SRC_FILES=$(COMMON_SRC_FILES) src/main.cpp
-TEST_SRC_FILES=$(COMMON_SRC_FILES) src/test_algorithms.cpp
+TEST_FILES=src/bfs_test.cpp src/ucs_test.cpp src/ids_test.cpp
+TEST_SRC_FILES=$(COMMON_SRC_FILES) $(TEST_FILES) src/test.cpp
 
 all: build
 
