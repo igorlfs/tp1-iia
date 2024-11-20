@@ -8,7 +8,8 @@ TEST(bfs, Simple) {
     W = 5;
     H = 3;
     matrix m = {
-        {INF, INF, INF}, {2.5, 1.0, 1.0}, {2.5, 6.0, 1.5}, {2.5, 1.0, 1.0}, {INF, INF, INF}};
+        {INF, INF, INF}, {2.5, 1.0, 1.0}, {2.5, 6.0, 1.5}, {2.5, 1.0, 1.0}, {INF, INF, INF},
+    };
 
     coords init = {1, 1};
 
@@ -30,7 +31,8 @@ TEST(bfs, Death) {
     W = 5;
     H = 3;
     matrix m = {
-        {INF, INF, INF}, {INF, 1.0, INF}, {INF, INF, INF}, {2.5, 1.0, 1.0}, {INF, INF, INF}};
+        {INF, INF, INF}, {INF, 1.0, INF}, {INF, INF, INF}, {2.5, 1.0, 1.0}, {INF, INF, INF},
+    };
     coords init = {1, 1};
     coords goal = {3, 1};
     EXPECT_THAT([&]() { bfs(m, init, goal); }, ThrowsMessage<runtime_error>(NO_PATH_FOUND_MESSAGE));

@@ -10,7 +10,11 @@ TEST(dls, InitEqualsGoal) {
     coords init;
     coords goal;
     init = goal = {1, 1};
-    matrix m = {{INF, INF, INF}, {INF, 1.0, INF}, {INF, INF, INF}};
+    matrix m = {
+        {INF, INF, INF},
+        {INF, 1.0, INF},
+        {INF, INF, INF},
+    };
 
     auto path = dls(m, init, goal, 0);
 
@@ -27,7 +31,11 @@ TEST(dls, cantFindDeepGoal) {
     H = 3;
     coords init = {1, 1};
     coords goal = {1, 2};
-    matrix m = {{INF, INF, INF}, {INF, 1.0, 1.0}, {INF, INF, INF}};
+    matrix m = {
+        {INF, INF, INF},
+        {INF, 1.0, 1.0},
+        {INF, INF, INF},
+    };
 
     auto path = dls(m, init, goal, 0);
 
@@ -39,7 +47,11 @@ TEST(dls, canFindDepthOne) {
     H = 3;
     coords init = {1, 1};
     coords goal = {1, 2};
-    matrix m = {{INF, INF, INF}, {INF, 1.0, 1.0}, {INF, INF, INF}};
+    matrix m = {
+        {INF, INF, INF},
+        {INF, 1.0, 1.0},
+        {INF, INF, INF},
+    };
 
     auto path = dls(m, init, goal, 1);
 
@@ -56,7 +68,11 @@ TEST(dls, canFindDepthTwo) {
     H = 3;
     coords init = {0, 0};
     coords goal = {0, 2};
-    matrix m = {{1.0, 1.0, 1.0}, {1.5, 1.0, 1.0}, {1.0, 1.0, 1.0}};
+    matrix m = {
+        {1.0, 1.0, 1.0},
+        {1.5, 1.0, 1.0},
+        {1.0, 1.0, 1.0},
+    };
 
     auto path = dls(m, init, goal, 2);
 
@@ -73,7 +89,11 @@ TEST(dls, canDodgeObstacle) {
     H = 3;
     coords init = {1, 0};
     coords goal = {1, 2};
-    matrix m = {{1.5, 1.0, 1.5}, {1.0, INF, 1.0}, {1.0, 1.5, 1.0}};
+    matrix m = {
+        {1.5, 1.0, 1.5},
+        {1.0, INF, 1.0},
+        {1.0, 1.5, 1.0},
+    };
 
     auto path = dls(m, init, goal, 4);
 
@@ -89,7 +109,8 @@ TEST(ids, Simple) {
     W = 5;
     H = 3;
     matrix m = {
-        {INF, INF, INF}, {2.5, 1.0, 1.0}, {2.5, 6.0, 1.5}, {2.5, 1.0, 1.0}, {INF, INF, INF}};
+        {INF, INF, INF}, {2.5, 1.0, 1.0}, {2.5, 6.0, 1.5}, {2.5, 1.0, 1.0}, {INF, INF, INF},
+    };
 
     coords init = {1, 1};
     coords goal = {3, 1};
@@ -107,7 +128,8 @@ TEST(ids, Death) {
     H = 3;
 
     matrix m = {
-        {INF, INF, INF}, {INF, 1.0, INF}, {INF, INF, INF}, {2.5, 1.0, 1.0}, {INF, INF, INF}};
+        {INF, INF, INF}, {INF, 1.0, INF}, {INF, INF, INF}, {2.5, 1.0, 1.0}, {INF, INF, INF},
+    };
     coords init = {1, 1};
     coords goal = {3, 1};
 
