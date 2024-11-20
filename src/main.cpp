@@ -26,7 +26,7 @@ matrix<double> read_matrix(ifstream &input_file) {
         stringstream stream(line);
         for (int j = 0; j < W; ++j) {
             stream >> c;
-            M.at(j).at(i) = terrain_cost_map[c];
+            M.at(j).at(i) = terrain_cost_map.at(c);
         }
     }
 
@@ -55,8 +55,8 @@ int main(int argc, char *argv[]) {
     assert(goal.fi < W && goal.se < H);
 
     // Agent can never be at an invalid position
-    assert(M[init.fi][init.se] != INF);
-    assert(M[goal.fi][goal.se] != INF);
+    assert(M.at(init.fi).at(init.se) != INF);
+    assert(M.at(goal.fi).at(goal.se) != INF);
 
     string algorithm = args.at(2);
 
