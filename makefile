@@ -20,4 +20,7 @@ test:
 clean:
 	rm $(EXE_TEST) $(EXE)
 
-.PHONY: all build clean test
+fast:
+	$(CXX) -O3 -o $(EXE) $(SRC_FILES)
+
+.PHONY: all build clean test fast
