@@ -36,7 +36,7 @@ matrix<double> read_matrix(ifstream &input_file) {
 void print_path(Path &path) {
     cout << fixed << showpoint << setprecision(1) << path.se;
     for (const auto &cell : path.fi) {
-        cout << " (" << cell.fi << ", " << cell.se << ")";
+        cout << " (" << cell.fi << "," << cell.se << ")";
     }
     cout << '\n';
 }
