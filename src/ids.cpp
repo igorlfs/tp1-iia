@@ -1,60 +1,59 @@
 #include "ids.hpp"
 
-bool dls(matrix &M, coords current, coords &goal, int depth, vector<coords> &path, double &cost,
-         vector<vector<bool>> &visited);
-
 Path ids(matrix &M, coords &init, coords &goal) {
-    int depth = 0;
     int upper_bound_search_depth = W * H;
 
-    while (depth <= upper_bound_search_depth) {
-        vector<coords> path;
-        double cost = 0.0;
-        vector<vector<bool>> visited(W, vector<bool>(W));
-
-        if (dls(M, init, goal, depth, path, cost, visited)) {
-            return {path, cost};
+    for (int depth = 0; depth <= upper_bound_search_depth; depth++) {
+        if (auto path = dls(M, init, goal, depth)) {
+            return *path;
         }
-
-        depth++;
     }
 
-    cerr << "A path should always exist\n";
-    exit(1);
+    throw runtime_error(NO_PATH_FOUND_MESSAGE);
 }
 
-bool dls(matrix &M, coords current, coords &goal, int depth, vector<coords> &path, double &cost,
-         vector<vector<bool>> &visited) {
-    if (current == goal) {
-        path.push_back(current);
-        return true;
-    }
+optional<Path> dls(matrix &M, coords &init, coords &goal, int max_depth) {
+    vector<vector<bool>> visited(W, vector<bool>(H));
+    stack<tuple<int, double, coords>> stk;
+    vector<vector<coords>> parent(W, vector<coords>(H, {-1, -1}));
 
-    if (depth <= 0) {
-        return false;
-    }
+    stk.emplace(0, 0.0, init);
 
-    int x = current.fi;
-    int y = current.se;
+    visited.at(init.fi).at(init.se) = true;
 
-    visited.at(x).at(y) = true;
-    path.push_back(current);
+    while (!stk.empty()) {
+        auto [current_depth, current_cost, current_coords] = stk.top();
+        stk.pop();
 
-    for (const auto &[dx, dy] : DIRECTIONS) {
-        int new_x = x + dx;
-        int new_y = y + dy;
+        if (current_depth > max_depth) {
+            continue;
+        }
 
-        if (is_within_bounds(new_x, new_y) && !visited.at(new_x).at(new_y) &&
-            M.at(new_x).at(new_y) != INF) {
-            double next_cost = cost + M.at(new_x).at(new_y);
-            if (dls(M, {new_x, new_y}, goal, depth - 1, path, next_cost, visited)) {
-                cost = next_cost;
-                return true;
+        if (current_coords == goal) {
+            vector<coords> path = rebuild_path(goal, init, parent);
+
+            return make_pair(path, current_cost);
+        }
+
+        int x = current_coords.fi;
+        int y = current_coords.se;
+
+        for (const auto &[dx, dy] : DIRECTIONS) {
+            int new_x = x + dx;
+            int new_y = y + dy;
+
+            if (is_within_bounds(new_x, new_y) && !visited.at(new_x).at(new_y) &&
+                M.at(new_x).at(new_y) != INF) {
+                visited.at(x).at(y) = true;
+
+                parent.at(new_x).at(new_y) = {x, y};
+
+                double new_cost = current_cost + M.at(new_x).at(new_y);
+
+                stk.push({current_depth + 1, new_cost, {new_x, new_y}});
             }
         }
     }
 
-    path.pop_back();
-    visited.at(x).at(y) = false;
-    return false;
+    return {};
 }
