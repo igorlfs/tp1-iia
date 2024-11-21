@@ -32,7 +32,6 @@ inline vector<coords> rebuild_path(coords goal, coords init, matrix<coords> &par
         path.push_back(step);
         step = parent.at(step.fi).at(step.se);
     }
-    path.push_back(init);
 
     reverse(path.begin(), path.end());
 

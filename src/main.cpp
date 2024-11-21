@@ -33,8 +33,9 @@ matrix<double> read_matrix(ifstream &input_file) {
     return M;
 }
 
-void print_path(Path &path) {
+void print_path(Path &path, coords init) {
     cout << fixed << showpoint << setprecision(1) << path.se;
+    cout << " (" << init.fi << "," << init.se << ")";
     for (const auto &cell : path.fi) {
         cout << " (" << cell.fi << "," << cell.se << ")";
     }
@@ -68,7 +69,7 @@ int main(int argc, char *argv[]) {
     } else if (algorithm == "UCS") {
         path = ucs(M, init, goal);
     }
-    print_path(path);
+    print_path(path, init);
 
     return 0;
 }
