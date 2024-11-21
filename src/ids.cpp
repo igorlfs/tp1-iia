@@ -22,11 +22,6 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
         auto [current_depth, node] = stk.top();
         stk.pop();
 
-        // If the depth has exceeded, we should backtrack
-        if (current_depth > max_depth) {
-            continue;
-        }
-
         // Otherwise we might have hit the goal
         if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
@@ -43,10 +38,6 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
         if (current_depth == max_depth) {
             continue;
         }
-
-        // The order of the previous checks is important
-        // We can't check if we hit the goal if the depth has exceeded
-        // There might a cleverer way to write these checks
 
         int x = node.fi;
         int y = node.se;
