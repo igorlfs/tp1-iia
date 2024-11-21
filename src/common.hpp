@@ -15,7 +15,7 @@ using State = pair<double, coords>;
 
 constexpr int INF = 0x3f3f3f3f;
 
-const vector<coords> DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+const vector<coords> DIRECTIONS = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
 
 const string NO_PATH_FOUND_MESSAGE = "A path should always exist";
 
