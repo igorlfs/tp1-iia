@@ -15,14 +15,11 @@ Diagnostics:
     Remove: 
       [
         modernize-use-trailing-return-type,
-        misc-use-internal-linkage,
         cppcoreguidelines-avoid-non-const-global-variables,
-        cppcoreguidelines-pro-bounds-pointer-arithmetic,
         readability-identifier-length,
         bugprone-easily-swappable-parameters,
         cppcoreguidelines-avoid-magic-numbers,
         readability-magic-numbers,
-        misc-no-recursion,
         # cppcoreguidelines-init-variables,
         # misc-non-private-member-variables-in-classes,
         # modernize-use-nodiscard,

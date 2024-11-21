@@ -2,9 +2,11 @@
 
 using State = pair<int, coords>; // {heuristic, coords}
 
+namespace {
 int manhattan_distance(const coords &current, const coords &goal) {
     return abs(goal.fi - current.fi) + abs(goal.se - current.se);
 }
+} // namespace
 
 Path greedy(matrix<double> &M, coords &init, coords &goal) {
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
