@@ -1,4 +1,5 @@
 #include "bfs.hpp"
+#include "greedy.hpp"
 #include "ids.hpp"
 #include "ucs.hpp"
 #include <cassert>
@@ -68,6 +69,8 @@ int main(int argc, char *argv[]) {
         path = ids(M, init, goal);
     } else if (algorithm == "UCS") {
         path = ucs(M, init, goal);
+    } else if (algorithm == "Greedy") {
+        path = greedy(M, init, goal);
     }
     print_path(path, init);
 
