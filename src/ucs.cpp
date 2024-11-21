@@ -1,30 +1,32 @@
 #include "ucs.hpp"
 
+using State = pair<double, coords>;
+
 Path ucs(matrix<double> &M, coords &init, coords &goal) {
     priority_queue<State, vector<State>, greater<>> pq;
     set<coords> visited;
     matrix<double> cost(W, vector<double>(H, INF));
-    matrix<coords> parent(W, vector<coords>(H, {-1, -1}));
+    matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
     pq.push({0.0, {init}});
 
     while (!pq.empty()) {
-        auto [current_cost, current_coords] = pq.top();
+        auto [current_cost, node] = pq.top();
         pq.pop();
 
-        if (visited.count(current_coords) != 0) {
+        if (visited.count(node) != 0) {
             continue;
         }
-        visited.insert(current_coords);
+        visited.insert(node);
 
-        if (current_coords == goal) {
+        if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
 
             return make_pair(path, current_cost);
         }
 
-        int x = current_coords.fi;
-        int y = current_coords.se;
+        int x = node.fi;
+        int y = node.se;
 
         for (const auto &[dx, dy] : DIRECTIONS) {
             int new_x = x + dx;

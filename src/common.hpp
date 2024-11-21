@@ -11,9 +11,9 @@ template <typename T> using matrix = vector<vector<T>>;
 using coords = pair<int, int>;
 using Path = pair<vector<coords>, double>;
 
-using State = pair<double, coords>;
-
 constexpr int INF = 0x3f3f3f3f;
+
+constexpr coords UNVISITED = {-1, -1};
 
 const vector<coords> DIRECTIONS = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
 

@@ -1,7 +1,5 @@
 #include "ids.hpp"
 
-constexpr coords UNVISITED = {-1, -1};
-
 Path ids(matrix<double> &M, coords &init, coords &goal) {
     int upper_bound_search_depth = W * H;
 
@@ -15,13 +13,13 @@ Path ids(matrix<double> &M, coords &init, coords &goal) {
 }
 
 optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth) {
-    stack<tuple<int, double, coords>> stk;
+    stack<tuple<int, coords>> stk;
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
-    stk.emplace(0, 0.0, init);
+    stk.emplace(0, init);
 
     while (!stk.empty()) {
-        auto [current_depth, current_cost, current_coords] = stk.top();
+        auto [current_depth, node] = stk.top();
         stk.pop();
 
         // If the depth has exceeded, we should backtrack
@@ -30,10 +28,15 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
         }
 
         // Otherwise we might have hit the goal
-        if (current_coords == goal) {
+        if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
 
-            return make_pair(path, current_cost);
+            double path_cost =
+                accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
+                    return sum + M.at(step.fi).at(step.se);
+                });
+
+            return make_pair(path, path_cost);
         }
 
         // If the current node isn't the goal but the depth threshold was hit, we should backtrack
@@ -45,8 +48,8 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
         // We can't check if we hit the goal if the depth has exceeded
         // There might a cleverer way to write these checks
 
-        int x = current_coords.fi;
-        int y = current_coords.se;
+        int x = node.fi;
+        int y = node.se;
 
         for (const auto &[dx, dy] : DIRECTIONS) {
             int new_x = x + dx;
@@ -56,9 +59,7 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
                 parent.at(new_x).at(new_y) == UNVISITED) {
                 parent.at(new_x).at(new_y) = {x, y};
 
-                double new_cost = current_cost + M.at(new_x).at(new_y);
-
-                stk.push({current_depth + 1, new_cost, {new_x, new_y}});
+                stk.push({current_depth + 1, {new_x, new_y}});
             }
         }
     }

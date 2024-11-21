@@ -2,25 +2,30 @@
 
 Path bfs(matrix<double> &M, coords &init, coords &goal) {
     matrix<bool> visited(W, vector<bool>(H));
-    queue<State> q;
-    matrix<coords> parent(W, vector<coords>(H, {-1, -1}));
+    queue<coords> q;
+    matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
-    q.push({0.0, {init}});
+    q.push({init});
 
     visited.at(init.fi).at(init.se) = true;
 
     while (!q.empty()) {
-        auto [current_cost, current_coords] = q.front();
+        auto node = q.front();
         q.pop();
 
-        if (current_coords == goal) {
+        if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
 
-            return make_pair(path, current_cost);
+            double path_cost =
+                accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
+                    return sum + M.at(step.fi).at(step.se);
+                });
+
+            return make_pair(path, path_cost);
         }
 
-        int x = current_coords.fi;
-        int y = current_coords.se;
+        int x = node.fi;
+        int y = node.se;
 
         for (const auto &[dx, dy] : DIRECTIONS) {
             int new_x = x + dx;
@@ -32,9 +37,7 @@ Path bfs(matrix<double> &M, coords &init, coords &goal) {
 
                 parent.at(new_x).at(new_y) = {x, y};
 
-                double new_cost = current_cost + M.at(new_x).at(new_y);
-
-                q.push({new_cost, {new_x, new_y}});
+                q.emplace(new_x, new_y);
             }
         }
     }

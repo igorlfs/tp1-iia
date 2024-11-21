@@ -126,13 +126,6 @@ TEST(dls, pathIsReconstructedCorrectly) {
     EXPECT_EQ(path->second, expected_cost);
     EXPECT_EQ(path->first, expected_path);
     EXPECT_EQ(path->first.size(), expected_depth);
-
-    // The actual cost is calculated independently from the path
-    double path_cost =
-        accumulate(path->first.begin(), path->first.end(), 0.0,
-                   [&m](double sum, const auto &step) { return sum + m.at(step.fi).at(step.se); });
-
-    EXPECT_EQ(path_cost, path->second);
 }
 
 TEST(dls, orderOfDirectionsMayCausePathToNotBeFound) {
