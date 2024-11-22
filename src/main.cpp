@@ -8,6 +8,11 @@ constexpr short NUM_ARGS = 7;
 
 int W, H;
 
+using AlgorithmFunc = function<Path(matrix<double> &, coords &, coords &)>;
+
+static const unordered_map<string, AlgorithmFunc> ALGORITHMS = {
+    {"BFS", bfs}, {"IDS", ids}, {"UCS", ucs}, {"Greedy", greedy}, {"Astar", astar}};
+
 namespace {
 map<char, double> terrain_cost_map = {{'.', 1.0}, {';', 1.5}, {'+', 2.5}, {'x', 6.0}, {'@', INF}};
 
@@ -61,20 +66,8 @@ int main(int argc, char *argv[]) {
     assert(M.at(init.fi).at(init.se) != INF);
     assert(M.at(goal.fi).at(goal.se) != INF);
 
-    const string &algorithm = args.at(2);
+    Path path = ALGORITHMS.at(args.at(2))(M, init, goal);
 
-    Path path;
-    if (algorithm == "BFS") {
-        path = bfs(M, init, goal);
-    } else if (algorithm == "IDS") {
-        path = ids(M, init, goal);
-    } else if (algorithm == "UCS") {
-        path = ucs(M, init, goal);
-    } else if (algorithm == "Greedy") {
-        path = greedy(M, init, goal);
-    } else if (algorithm == "Astar") {
-        path = astar(M, init, goal);
-    }
     print_path(path, init);
 
     return 0;
