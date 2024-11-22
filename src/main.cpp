@@ -3,8 +3,6 @@
 #include "greedy.hpp"
 #include "ids.hpp"
 #include "ucs.hpp"
-#include <cassert>
-#include <sstream>
 
 constexpr short NUM_ARGS = 7;
 
