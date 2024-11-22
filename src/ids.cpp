@@ -22,7 +22,7 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
         auto [current_depth, node] = stk.top();
         stk.pop();
 
-        // Otherwise we might have hit the goal
+        // We might have hit the goal
         if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
 
