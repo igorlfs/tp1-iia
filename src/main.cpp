@@ -7,9 +7,10 @@
 
 constexpr short NUM_ARGS = 7;
 
-map<char, double> terrain_cost_map = {{'.', 1.0}, {';', 1.5}, {'+', 2.5}, {'x', 6.0}, {'@', INF}};
-
 int W, H;
+
+namespace {
+map<char, double> terrain_cost_map = {{'.', 1.0}, {';', 1.5}, {'+', 2.5}, {'x', 6.0}, {'@', INF}};
 
 matrix<double> read_matrix(ifstream &input_file) {
     string line;
@@ -43,6 +44,7 @@ void print_path(Path &path, coords init) {
     cout << '\n';
 }
 
+} // namespace
 int main(int argc, char *argv[]) {
     assert(argc == NUM_ARGS);
     vector<string> args(argv, argv + argc);
@@ -60,7 +62,7 @@ int main(int argc, char *argv[]) {
     assert(M.at(init.fi).at(init.se) != INF);
     assert(M.at(goal.fi).at(goal.se) != INF);
 
-    string algorithm = args.at(2);
+    const string &algorithm = args.at(2);
 
     Path path;
     if (algorithm == "BFS") {
