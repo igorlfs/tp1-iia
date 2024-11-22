@@ -2,12 +2,6 @@
 
 using State = pair<int, coords>; // {heuristic, coords}
 
-namespace {
-int manhattan_distance(const coords &current, const coords &goal) {
-    return abs(goal.fi - current.fi) + abs(goal.se - current.se);
-}
-} // namespace
-
 Path greedy(matrix<double> &M, coords &init, coords &goal) {
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
     priority_queue<State, vector<State>, greater<>> pq;
@@ -41,7 +35,7 @@ Path greedy(matrix<double> &M, coords &init, coords &goal) {
 
                 int heuristic = manhattan_distance({new_x, new_y}, goal);
 
-                pq.push({heuristic, {new_x, new_y}});
+                pq.emplace(heuristic, make_pair(new_x, new_y));
             }
         }
     }

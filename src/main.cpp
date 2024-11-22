@@ -1,3 +1,4 @@
+#include "astar.hpp"
 #include "bfs.hpp"
 #include "greedy.hpp"
 #include "ids.hpp"
@@ -73,6 +74,8 @@ int main(int argc, char *argv[]) {
         path = ucs(M, init, goal);
     } else if (algorithm == "Greedy") {
         path = greedy(M, init, goal);
+    } else if (algorithm == "Astar") {
+        path = astar(M, init, goal);
     }
     print_path(path, init);
 

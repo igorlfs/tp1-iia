@@ -25,6 +25,10 @@ inline bool is_within_bounds(int x, int y) {
     return x >= 0 && x < W && y >= 0 && y < H;
 }
 
+inline int manhattan_distance(const coords &current, const coords &goal) {
+    return abs(goal.fi - current.fi) + abs(goal.se - current.se);
+}
+
 inline vector<coords> rebuild_path(coords goal, coords init, matrix<coords> &parent) {
     vector<coords> path;
 

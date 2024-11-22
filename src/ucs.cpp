@@ -4,20 +4,15 @@ using State = pair<double, coords>;
 
 Path ucs(matrix<double> &M, coords &init, coords &goal) {
     priority_queue<State, vector<State>, greater<>> pq;
-    set<coords> visited;
     matrix<double> cost(W, vector<double>(H, INF));
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
     pq.push({0.0, {init}});
+    cost.at(init.fi).at(init.se) = 0.0;
 
     while (!pq.empty()) {
         auto [current_cost, node] = pq.top();
         pq.pop();
-
-        if (visited.count(node) != 0) {
-            continue;
-        }
-        visited.insert(node);
 
         if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
