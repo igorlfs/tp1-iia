@@ -1,26 +1,62 @@
-CXX=clang++
-CXXFLAGS=-std=c++20 -glldb -fstandalone-debug -Wall -Wextra
+# Directories
+BUILD_DIR = obj
+SRC_DIR = src
+LIB_DIR = lib
+TEST_DIR = tests
 
-EXE=bin
-EXE_TEST=test
+# Compiler
+CXX = clang++
 
-COMMON_SRC_FILES=src/ids.cpp src/bfs.cpp src/ucs.cpp src/greedy.cpp src/astar.cpp
-SRC_FILES=$(COMMON_SRC_FILES) src/main.cpp
-TEST_FILES=src/bfs_test.cpp src/ucs_test.cpp src/ids_test.cpp src/greedy_test.cpp src/astar_test.cpp
-TEST_SRC_FILES=$(COMMON_SRC_FILES) $(TEST_FILES) src/test.cpp
+# Flags: Compile, more warnings, use C++20, enable debugging symbols and include path
+CXXFLAGS = -c -Wall -Wextra -Wshadow -Wpedantic -std=c++20 -g -fstandalone-debug -I$(LIB_DIR)
 
-all: build
+# Binaries
+TARGET = bin
+TESTS = test
 
-build:
-	$(CXX) $(CXXFLAGS) -o $(EXE) $(SRC_FILES)
+# Source
+CPP_SOURCE = $(filter-out $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*))
+CPP_TEST_SOURCE = $(filter-out $(TEST_DIR)/main_test.cpp, $(wildcard $(TEST_DIR)/*))
+ 
+# Headers
+HPP_SOURCE = $(wildcard $(LIB_DIR)/*)
+ 
+# Objects
+OBJ = $(subst .cpp,.o,$(subst $(SRC_DIR),$(BUILD_DIR),$(CPP_SOURCE)))
+TEST_OBJ = $(subst .cpp,.o,$(subst $(TEST_DIR),$(BUILD_DIR),$(CPP_TEST_SOURCE)))
+ 
+# Command used at clean target
+RM = rm -rf
+ 
+# Compilation and linking
+all: $(BUILD_DIR) $(TARGET)
 
-test:
-	$(CXX) $(CXXFLAGS) -o $(EXE_TEST) -lgtest $(TEST_SRC_FILES)
+$(TARGET): $(OBJ) ./$(BUILD_DIR)/main.o
+	$(CXX) $^ -o $@
+ 
+./$(BUILD_DIR)/main.o: ./$(SRC_DIR)/main.cpp $(HPP_SOURCE)
+	$(CXX) $< $(CXXFLAGS) -o $@
 
+test: $(TESTS)
+
+$(TESTS): $(TEST_OBJ) $(OBJ) ./$(BUILD_DIR)/main_test.o
+	$(CXX) $^ -lgtest -o $@
+	./$(TESTS)
+
+./$(BUILD_DIR)/main_test.o: ./$(TEST_DIR)/main_test.cpp $(HPP_SOURCE)
+	$(CXX) $< $(CXXFLAGS) -o $@
+
+$(BUILD_DIR)/%_test.o: $(TEST_DIR)/%_test.cpp $(LIB_DIR)/%.hpp
+	$(CXX) $< $(CXXFLAGS) -o $@
+
+./$(BUILD_DIR)/%.o: ./$(SRC_DIR)/%.cpp ./$(LIB_DIR)/%.hpp ./$(LIB_DIR)/common.hpp
+	$(CXX) $< $(CXXFLAGS) -o $@
+ 
+obj:
+	@ test -d $(BUILD_DIR) && true || mkdir -p $(BUILD_DIR)
+ 
 clean:
-	rm $(EXE_TEST) $(EXE)
-
-fast:
-	$(CXX) -O3 -o $(EXE) $(SRC_FILES)
-
-.PHONY: all build clean test fast
+	@ $(RM) ./$(BUILD_DIR)/*.o $(TARGET) $(TESTS) *~
+	@ test -d $(BUILD_DIR) && rmdir $(BUILD_DIR) || echo "Nothing to clean"
+ 
+.PHONY: all clean obj test

@@ -1,2 +1,8 @@
+# Binaries
 bin
 test
+
+# Build-related stuff
+obj
+compile_commands.json
+.cache

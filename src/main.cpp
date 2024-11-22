@@ -44,8 +44,8 @@ void print_path(Path &path, coords init) {
     }
     cout << '\n';
 }
-
 } // namespace
+
 int main(int argc, char *argv[]) {
     assert(argc == NUM_ARGS);
     vector<string> args(argv, argv + argc);
