@@ -13,8 +13,10 @@ using AlgorithmFunc = function<Path(matrix<double> &, coords &, coords &)>;
 static const unordered_map<string, AlgorithmFunc> ALGORITHMS = {
     {"BFS", bfs}, {"IDS", ids}, {"UCS", ucs}, {"Greedy", greedy}, {"Astar", astar}};
 
+static const map<char, double> TERRAIN_COST_MAP = {
+    {'.', 1.0}, {';', 1.5}, {'+', 2.5}, {'x', 6.0}, {'@', INF}};
+
 namespace {
-map<char, double> terrain_cost_map = {{'.', 1.0}, {';', 1.5}, {'+', 2.5}, {'x', 6.0}, {'@', INF}};
 
 matrix<double> read_matrix(ifstream &input_file) {
     string line;
@@ -32,7 +34,7 @@ matrix<double> read_matrix(ifstream &input_file) {
         stringstream stream(line);
         for (int j = 0; j < W; ++j) {
             stream >> c;
-            M.at(j).at(i) = terrain_cost_map.at(c);
+            M.at(j).at(i) = TERRAIN_COST_MAP.at(c);
         }
     }
 
