@@ -13,7 +13,7 @@ Path ids(matrix<double> &M, coords &init, coords &goal) {
 }
 
 optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth) {
-    stack<tuple<int, coords>> stk;
+    stack<pair<int, coords>> stk;
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
     stk.emplace(0, init);
