@@ -89,7 +89,7 @@ A heurística escolhida foi a distancia de Manhattan. Ela é bem simples, pois �
 
 Os 2 mapas (`floresta.map` e `cidade.map`) de exemplo disponibilizados via _Moodle_ foram usados para se realizar um _benchmarking_ dos algoritmos. De antemão, vale ressaltar que a ordem dos operadores é um fator muito importante no tempo de execução, especialmente da IDS. Com isso em mente, as comparações vão incluir os casos simétricos -- ou seja, invertendo o nó de início e o nó objetivo. Além disso, na execução dos experimentos, a `-O3`, de otimização do compilador, foi habilitada.
 
-== Tempo de Execução
+== Tempo de Execução <time>
 
 Para avaliar o tempo de execução, foram propostas 5 pares de coordenadas em cada mapa. Como são dois mapas e a simetria é levada em conta, foram realizados 20 execuções por mapa.
 
@@ -120,8 +120,34 @@ A floresta é um mapa mais denso, então não é possível selecionar os pontos 
   caption: [Tempo de execução no mapa Floresta, fazendo o caminho reverso.],
 ) <forest-time-rev>
 
-Como as coordenadas $x$ e $y$ dos pontos são diferentes, foi adotado o $y$ como base para a distância (para manter a consistência com o gráfico anterior).
+Como as coordenadas $x$ e $y$ dos pontos são diferentes, foi adotado o $y$ como base para a distância (para manter a consistência com o gráfico anterior, da @ids-time-city).
 
 Essa falta de correlação pode estar associada ao tamanho das instâncias ser muito pequeno, de modo que questões de _overhead_ não são insignificantes. É interessante observar que apesar disso, os tempos de execução são bem consistentes entre os algoritmos, de formar geral. Esse é um padrão claramente distinto do comportamento observado no outro mapa, em que o IDS foi consideravelmente mais longo. Essa distinção provavelmente aconteceu pelo fato do IDS não precisar "perder tempo" explorando caminhos infrutíferos, pois muitos deles estariam bloqueados.
 
 == Número de Estados Expandidos <nee>
+
+O número de estados expandidos não pode ser obtido diretamente da saída esperada do programa. É possível _plotar_ o caminho, mas isso limita significativamente o poder de análise. Por exemplo, usando apenas a comparação do caminho, os algoritmos UCS e A\* são indistinguíveis, pois ambos sempre são ótimos. Tendo isso em vista, essa seção possui uma breve análise preliminar, que foca em algumas execuções específicas, comparando os caminhos.
+
+Depois, é introduzida uma variação do programa, que rastreia quais estados foram expandidos, permitindo extrair a quantidade total. Como essa operação introduz um certo _overhead_ e é incompatível a saída especificada para o programa, essa variação foi considerada exclusiva desta análise. Ou seja, a análise de tempo não a inclui.
+
+=== Caminhos
+
+Para analisar os caminhos, foram selecionadas duas execuções da @time: $(0, 0) arrow (127, 127)$ e o caminho reverso, no mapa Cidade.
+
+#figure(
+  image("plots/paths-front.svg", width: 80%),
+  caption: [Caminhos, iniciando em (0, 0) e terminando em (127, 127)],
+) <paths-front>
+
+#figure(
+  image("plots/paths-back.svg", width: 80%),
+  caption: [Caminhos, iniciando em (127, 127) e terminando em (0, 0)],
+) <paths-back>
+
+A grande diferença das figuras é que, a IDS, no caminhamento reverso, explora muito mais estados devido à ordem das ações. Isso acontece porque a configuração padrão favorece posições que começam no canto superior esquerdo, pois a região explorada inicialmente é "para baixo e para a direita". É por isso que o tempo de execução da IDS foi tão elevado na seção @time.
+
+Isso também explica porque, quando se aumenta a distância entre os pontos, o tempo de execução diminui: quando se começa "no meio" do tabuleiro, muitos estados podem ser explorados seguindo as direções preferenciais (BAIXO, DIREITA), que não são benéficas nesse caso. No entanto, quando se começa no canto inferior direito, os efeitos são reduzidos pois regiões que potencialmente seriam exploradas estão, na verdade, fora dos limites do mapa.
+
+A ordem das ações acaba impactando em alguns dos outros algoritmos também, mas em menor grau. Por exemplo, a BFS fez um caminho quase perfeitamente simétrico. Outro ponto interessante é que os algoritmos ótimos não fizeram exatamente o mesmo caminho na volta, apesar de terem feito na ida. Isso acontece porque existe mais de um caminho ótimo e, devido à ordem das operações, houve um trecho (próximo da ponto $P = (40, 40)$) em que o A\* e o UCS divergiram.
+
+=== Estados
