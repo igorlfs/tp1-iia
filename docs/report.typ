@@ -72,7 +72,7 @@ A busca gulosa é semelhante à UCS, pois também usa um _heap_ (apesar de não 
 
 === A\*
 
-Por fim, o A-Estrela é uma combinação da busca gulosa com o UCS, que considera a soma dos custos gerados nestes algoritmos. A ideia é fazer uma busca que sempre é ótima, como no UCS, mas que é rápida porque é guiada pela heurística.
+Por fim, o A-Estrela é uma combinação da busca gulosa com a UCS, que considera a soma dos custos gerados nestes algoritmos. A ideia é fazer uma busca que sempre é ótima, como na UCS, mas que é rápida porque é guiada pela heurística.
 
 == Outras decisões de implementação
 
@@ -97,57 +97,93 @@ Para avaliar o tempo de execução, foram propostas 5 pares de coordenadas em ca
 
 Como este mapa possui menos estados inválidos, o início do mapa foi fixado em (0, 0) e, os destinos, foram da forma $(2^i-1, 2^i-1)$, com $i$ variando de 4 até o limite do mapa, que gera a coordenada (255, 255). Para estes casos, os algoritmos _Greedy_ e BFS são extremamente rápidos, sendo que, boa parte do tempo de execução está associada a algum _overhead_ e não ao tempo de processamento dos estados propriamente ditos. A segunda "classe" de algoritmos é composta pelos algoritmos UCS e A\*: na teoria, o A\* deveria ser mais rápido, mas para os casos considerados nesta seção, não houve diferença significativa: ambos ficaram na faixa de dezenas de milissegundos para a maior instância, não ultrapassando 60ms.
 
-O único algoritmo que apresentou um comportamento interessante foi o IDS. Na @ids-time-city, o caso base começa em (0, 0) e é até bem comportado, mas vale destacar que ele demorou muito mais do que os outros algoritmos: para a maior instância, seu tempo de execução fica próximo de meio segundo. O caso em que a execução termina em (0, 0) é ainda mais intrigante, pois, além de demorar (ainda) mais, a entrada "intermediária" teve um tempo de execução muito semelhante ao caso mais distante, ambos beirando os 2.5s. O porquê disso será melhor discutido na @nee.
+O único algoritmo que apresentou um comportamento interessante foi a IDS. Na @ids-time-city, o caso base é até bem comportado, mas vale destacar que ele demorou muito mais do que os outros algoritmos: para a maior instância, seu tempo de execução ficou próximo de meio segundo. O caso em que a execução termina em (0, 0) é ainda mais intrigante, pois, além de demorar (ainda) mais, a entrada "intermediária" teve um tempo de execução muito semelhante ao caso mais distante, ambos beirando os 2.5s. O porquê disso será melhor discutido na @nee.
 
 #figure(
   image("plots/ids-time-city.png"),
-  caption: [Tempo de execução do IDS no mapa Cidade.],
+  caption: [Tempo de execução da IDS no mapa Cidade.],
 ) <ids-time-city>
 
 De forma geral, não se pode dizer que o tempo escala proporcionalmente à distância de Manhattan. Esse efeito foi observado, em menor escala, com os algoritmos rápidos também.
 
 === Floresta
 
-A floresta é um mapa mais denso, então não é possível selecionar os pontos usando-se a "estratégia de base 2" da seção anterior. No entanto, ela foi usada de base para se definir o ponto de início (17, 0), que é o canto superior mais à esquerda. Os pontos de destino escolhidos foram: (17, 16), (35, 31), (102, 63), (132, 127) e (208, 255). A escolha se deu a partir do deslocamento dos pontos da estratégia anterior para posições próximas que não estivesse bloqueadas. Como é possível observar nas figuras a seguir, não parece haver um padrão para o tempo de execução.
+A Floresta é um mapa mais denso, então não é possível selecionar os pontos usando-se a "estratégia de base 2" da seção anterior. No entanto, ela foi usada de base para se definir o ponto de início (17, 0), que é o canto superior mais à esquerda. Os pontos de destino escolhidos foram: (17, 16), (35, 31), (102, 63), (132, 127) e (208, 255). A escolha se deu a partir do deslocamento dos pontos da estratégia anterior para posições próximas que não estivesse bloqueadas.
+
+No geral, o comportamento foi bem semelhante ao outro mapa, mas a velocidade dos algoritmos foi ainda mais acentuada devido ao espaço de busca reduzido. Foi possível separar os algoritmos em dois grupos: os ultrarrápidos e a IDS. De fato, o tempo dos ultrarrápidos não excedeu 10ms nas instâncias escolhidas. A IDS, por outro lado, apresentou o comportamento que pode ser visto na @ids-time-forest.
 
 #figure(
-  image("plots/forest-time-base.png", width: 90%),
-  caption: [Tempo de execução no mapa Floresta.],
-) <forest-time-base>
+  image("plots/ids-time-forest.png"),
+  caption: [Tempo de execução da IDS no mapa Floresta.],
+) <ids-time-forest>
 
-#figure(
-  image("plots/forest-time-reverse.png", width: 90%),
-  caption: [Tempo de execução no mapa Floresta, fazendo o caminho reverso.],
-) <forest-time-rev>
+Como as coordenadas $x$ e $y$ dos pontos são diferentes, foi adotado o $y$ como base para a distância (para aproximar consistência com o gráfico anterior, da @ids-time-city). Devido à alta quantidade de caminhos bloqueados neste mapa, a execução de destaque foi a de distância 63 (comportamento consistente em ambas direções), com tempo de execução elevado para sua distância. De fato, neste mapa também não parece existir relação clara entre a distância e o tempo de execução.
 
-Como as coordenadas $x$ e $y$ dos pontos são diferentes, foi adotado o $y$ como base para a distância (para manter a consistência com o gráfico anterior, da @ids-time-city).
-
-Essa falta de correlação pode estar associada ao tamanho das instâncias ser muito pequeno, de modo que questões de _overhead_ não são insignificantes. É interessante observar que apesar disso, os tempos de execução são bem consistentes entre os algoritmos, de formar geral. Esse é um padrão claramente distinto do comportamento observado no outro mapa, em que o IDS foi consideravelmente mais longo. Essa distinção provavelmente aconteceu pelo fato do IDS não precisar "perder tempo" explorando caminhos infrutíferos, pois muitos deles estariam bloqueados.
+Há, ainda, a questão do _overhead_, que pode ter influenciado na análise de tempo como um todo. Como o programa é rápido, a execução em ambos os mapas está sujeita a grandes variações considerando fatores externos, como o _load_ do sistema operacional. Uma análise mais aprofundada exigiria mapas maiores.
 
 == Número de Estados Expandidos <nee>
 
 O número de estados expandidos não pode ser obtido diretamente da saída esperada do programa. É possível _plotar_ o caminho, mas isso limita significativamente o poder de análise. Por exemplo, usando apenas a comparação do caminho, os algoritmos UCS e A\* são indistinguíveis, pois ambos sempre são ótimos. Tendo isso em vista, essa seção possui uma breve análise preliminar, que foca em algumas execuções específicas, comparando os caminhos.
 
-Depois, é introduzida uma variação do programa, que rastreia quais estados foram expandidos, permitindo extrair a quantidade total. Como essa operação introduz um certo _overhead_ e é incompatível a saída especificada para o programa, essa variação foi considerada exclusiva desta análise. Ou seja, a análise de tempo não a inclui.
+Depois, é introduzida uma variação do programa, que rastreia quais estados foram expandidos, permitindo extrair sua totalidade. Como essa operação introduz um certo _overhead_ e é incompatível com a saída especificada para o programa, essa variação foi considerada exclusiva desta análise.
 
-=== Caminhos
+=== Caminhos <paths>
 
 Para analisar os caminhos, foram selecionadas duas execuções da @time: $(0, 0) arrow (127, 127)$ e o caminho reverso, no mapa Cidade.
 
 #figure(
-  image("plots/paths-front.svg", width: 80%),
-  caption: [Caminhos, iniciando em (0, 0) e terminando em (127, 127)],
+  image("plots/paths-front.svg"),
+  caption: [Caminhos, iniciando em (0, 0) e terminando em (127, 127).],
 ) <paths-front>
 
 #figure(
   image("plots/paths-back.svg", width: 80%),
-  caption: [Caminhos, iniciando em (127, 127) e terminando em (0, 0)],
+  caption: [Caminhos, iniciando em (127, 127) e terminando em (0, 0).],
 ) <paths-back>
 
 A grande diferença das figuras é que, a IDS, no caminhamento reverso, explora muito mais estados devido à ordem das ações. Isso acontece porque a configuração padrão favorece posições que começam no canto superior esquerdo, pois a região explorada inicialmente é "para baixo e para a direita". É por isso que o tempo de execução da IDS foi tão elevado na seção @time.
 
-Isso também explica porque, quando se aumenta a distância entre os pontos, o tempo de execução diminui: quando se começa "no meio" do tabuleiro, muitos estados podem ser explorados seguindo as direções preferenciais (BAIXO, DIREITA), que não são benéficas nesse caso. No entanto, quando se começa no canto inferior direito, os efeitos são reduzidos pois regiões que potencialmente seriam exploradas estão, na verdade, fora dos limites do mapa.
-
-A ordem das ações acaba impactando em alguns dos outros algoritmos também, mas em menor grau. Por exemplo, a BFS fez um caminho quase perfeitamente simétrico. Outro ponto interessante é que os algoritmos ótimos não fizeram exatamente o mesmo caminho na volta, apesar de terem feito na ida. Isso acontece porque existe mais de um caminho ótimo e, devido à ordem das operações, houve um trecho (próximo da ponto $P = (40, 40)$) em que o A\* e o UCS divergiram.
+A ordem das ações acaba impactando em alguns dos outros algoritmos também, mas em menor grau. Por exemplo, a BFS fez um caminho quase perfeitamente simétrico. Outro ponto interessante é que os algoritmos ótimos não fizeram exatamente o mesmo caminho na "volta", apesar de terem feito na "ida". Isso acontece porque existe mais de um caminho ótimo e, devido à ordem das operações, houve um trecho (próximo a $P = (40, 40)$) em que o A\* e a UCS divergiram.
 
 === Estados
+
+Para finalizar, a análise de estados explorados. Como mencionado no início da seção, foi feita uma modificação no programa, para que ele pudesse produzir dados mais relevantes para esta análise. Em suma, a modificação troca o custo da solução pela quantidade de estados explorados e o caminho gerado por uma lista com todos os nós visitados. Novamente, a IDS introduz certa dificuldade: o mesmo nó é visitado diversas vezes, o que contribui consideravelmente para seu tempo de execução. No entanto, a abordagem de somente contar os nós visitados não é capaz de detectar isso.
+
+Além disso, em outros algoritmos, como a UCS e o A\*, também podem acontecer repetições. No entanto, nesta seção preferiu-se apenas comparar os nós visitados, porque algumas conclusões importantes já foram deduzidas nas outras análises: independentemente das repetições, a IDS visita muito mais nós (ver @paths-back). De fato, as questões ainda não respondidas podem ser exploradas justamente a partir da exploração da quantidade "líquida" de estados visitados.
+
+Por exemplo: o quão melhor é o A\* em relação à UCS? A partir da discussão na @paths, não era possível extrair uma resposta. Para responder a essa pergunta, o experimento da @paths foi repetido com a modificação proposta aqui. O resultado para os caminhos "base" é exibido na @visited-ucs-astar. Em termos absolutos, o A\* visitou 8078 estados, enquanto a UCS visitou um total de 23367 estados. Ou seja, nesse caso específico, a busca do A\* visitou aproximadamente $1/3$ dos estados da busca da UCS.
+
+#figure(
+  image("plots/visited-nodes-ucs-astar.svg"),
+  caption: [Nós visitados, iniciando em (0, 0) e terminando em (127, 127).],
+) <visited-ucs-astar>
+
+De forma mais geral, os experimentos da seção de tempo (@time) foram repetidos e os gráficos, com a contagem de estados visitados, podem ser encontrados nas figuras a seguir.
+
+Primeiramente, no mapa Cidade, fica evidente a eficiência do _Greedy_, que visita pouquíssimos estados. Na maioria dos casos, o A\* deixa a busca bem mais rápida que o UCS, como avaliado na @visited-ucs-astar. No entanto, para as instâncias maiores, o ganho é pequeno. Não foi encontrada uma explicação para o fato de a BFS e a UCS possuírem curvas tão semelhantes. Outro caso interessante foi a IDS ter uma redução tão drástica na maior busca (para o caminho de "ida").
+
+#figure(
+  image("plots/city-visited-base.png"),
+  caption: [Nós visitados, no mapa Cidade.],
+) <visited-city-base>
+
+#figure(
+  image("plots/city-visited-reverse.png"),
+  caption: [Nós visitados, no mapa Cidade, caminho reverso.],
+) <visited-city-rev>
+
+Comparando-se ambos os gráficos, é possível observar que quase todos os algoritmos "pioram" (visitam mais estados) na busca reversa, exceto quando ela é colossal (distância 255), momento em que já não há mais tanta diferença. O mapa Floresta é discutido a seguir.
+
+#figure(
+  image("plots/forest-visited-base.png"),
+  caption: [Nós visitados, no mapa Floresta.],
+) <visited-forest-base>
+
+#figure(
+  image("plots/forest-visited-reverse.png"),
+  caption: [Nós visitados, no mapa Floresta, caminho reverso.],
+) <visited-forest-base>
+
+Fica clara a relação entre o tempo de execução e o número de estados expandidos: na @ids-time-forest, observou-se que para a execução de distância 63, o tempo de execução foi particularmente elevado. Nas figuras acima, é possível notar que neste caso, a maioria dos algoritmos explora "desproporcionalmente" o espaço de busca (especialmente na "volta").
+
+Tal qual no outro mapa, UCS e BFS são muito próximas em termos de estados explorados. Vale notar que os algoritmos tem um comportamento consistente no caso base e que a análise de mais pontos poderia ser interessante suavizar o formato "ondular" do gráfico. Para o caminho reverso é mais complicado de se extrair informações: tanto a UCS como a BFS atingem um pico logo no início, e ficam por volta dele, mas cada um dos outros algoritmos é diferente. Para o _Greedy_, por exemplo, o maior "contorno" que o algoritmo teve que fazer, provavelmente estava na primeira metade da busca. Já o A\* tem um comportamento semelhante ao outro mapa, com rendimentos decrescentes.
