@@ -7,8 +7,8 @@ TEST_DIR = tests
 # Compiler
 CXX = clang++
 
-# Flags: Compile, more warnings, use C++23, enable debugging symbols and include path
-CXXFLAGS = -c -Wall -Wextra -Wshadow -Wpedantic -std=c++23 -g -fstandalone-debug -I$(LIB_DIR)
+# Flags: Compile, more warnings, use C++20, enable debugging symbols and include path
+CXXFLAGS = -c -Wall -Wextra -Wshadow -Wpedantic -std=c++20 -g -fstandalone-debug -I$(LIB_DIR)
 
 # Binaries
 TARGET = bin
