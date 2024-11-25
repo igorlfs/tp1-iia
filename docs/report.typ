@@ -137,7 +137,7 @@ Para analisar os caminhos, foram selecionadas duas execuções da @time: $(0, 0)
 ) <paths-front>
 
 #figure(
-  image("plots/paths-back.svg", width: 80%),
+  image("plots/paths-back.svg"),
   caption: [Caminhos, iniciando em (127, 127) e terminando em (0, 0).],
 ) <paths-back>
 
