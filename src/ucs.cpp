@@ -34,6 +34,7 @@ Path ucs(matrix<double> &M, coords &init, coords &goal) {
                 if (new_cost < cost.at(new_x).at(new_y)) {
                     cost.at(new_x).at(new_y) = new_cost;
                     parent.at(new_x).at(new_y) = {x, y};
+
                     pq.emplace(new_cost, make_pair(new_x, new_y));
                 }
             }
