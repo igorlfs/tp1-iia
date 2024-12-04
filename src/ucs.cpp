@@ -17,7 +17,7 @@ Path ucs(matrix<double> &M, coords &init, coords &goal) {
         if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
 
-            return make_pair(path, current_cost);
+            return {path, current_cost};
         }
 
         int x = node.fi;

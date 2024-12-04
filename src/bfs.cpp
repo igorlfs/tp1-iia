@@ -18,7 +18,7 @@ Path bfs(matrix<double> &M, coords &init, coords &goal) {
                     return sum + M.at(step.fi).at(step.se);
                 });
 
-            return make_pair(path, path_cost);
+            return {path, path_cost};
         }
 
         int x = node.fi;

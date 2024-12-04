@@ -9,14 +9,12 @@ Path greedy(matrix<double> &M, coords &init, coords &goal) {
     pq.emplace(manhattan_distance(init, goal), init);
 
     while (!pq.empty()) {
-        auto [_, current] = pq.top();
+        auto [_, node] = pq.top();
         pq.pop();
 
-        int x = current.fi;
-        int y = current.se;
-
-        if (current == goal) {
+        if (node == goal) {
             vector<coords> path = rebuild_path(goal, init, parent);
+
             double path_cost =
                 accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
                     return sum + M.at(step.fi).at(step.se);
@@ -24,6 +22,9 @@ Path greedy(matrix<double> &M, coords &init, coords &goal) {
 
             return {path, path_cost};
         }
+
+        int x = node.fi;
+        int y = node.se;
 
         for (const auto &[dx, dy] : DIRECTIONS) {
             int new_x = x + dx;
