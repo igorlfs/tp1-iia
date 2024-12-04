@@ -64,7 +64,7 @@ A IDS é uma DFS aplicada repetida diversas vezes, para profundidades cada vez m
 
 === UCS
 
-A UCS é também muito similar aos algoritmos anteriores. A diferença aqui é que usado um _heap_, que prioriza o nó de menor custo até então. Para que isso possa ser feito de maneira eficiente, é importante manter em memória uma matriz com o custo de cada posição. É possível visitar o mesmo nó mais de uma vez.
+A UCS é também muito similar aos algoritmos anteriores. A diferença aqui é que usado um _heap_, que prioriza o nó de menor custo até então. Para que isso possa ser feito de maneira eficiente, é importante manter em memória uma matriz com o custo de cada posição.
 
 === _Greedy_
 

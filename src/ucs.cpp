@@ -27,7 +27,8 @@ Path ucs(matrix<double> &M, coords &init, coords &goal) {
             int new_x = x + dx;
             int new_y = y + dy;
 
-            if (is_within_bounds(new_x, new_y) && M.at(new_x).at(new_y) != INF) {
+            if (is_within_bounds(new_x, new_y) && M.at(new_x).at(new_y) != INF &&
+                parent.at(new_x).at(new_y) == UNVISITED) {
                 double new_cost = current_cost + M.at(new_x).at(new_y);
 
                 if (new_cost < cost.at(new_x).at(new_y)) {
