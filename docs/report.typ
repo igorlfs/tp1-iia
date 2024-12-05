@@ -68,7 +68,7 @@ A UCS é também muito similar aos algoritmos anteriores. A diferença aqui é q
 
 === _Greedy_
 
-A busca gulosa é semelhante à UCS, pois também usa um _heap_ (apesar de não precisar de matriz de custos). A ideia é seguir pelo "melhor" caminho, mas usando uma aproximação definida por uma heurística (mais detalhes na @heu). Na busca gulosa, é explorado o "melhor neste momento", em detrimento do "melhor geral".
+A busca gulosa é semelhante à UCS, pois também usa um _heap_ (apesar de não precisar de matriz de custos). A ideia é seguir pelo "melhor" caminho, mas usando uma aproximação definida por uma heurística (mais detalhes na @heu). Na busca gulosa, é explorado o "caminho que _parece_ melhor neste momento".
 
 === A\*
 
@@ -76,7 +76,7 @@ Por fim, o A-Estrela é uma combinação da busca gulosa com a UCS, que consider
 
 == Outras decisões de implementação
 
-Presume-se que sempre existe um caminho de A (início) para B (objetivo). Caso algum dos nós tenha custo infinito, o programa é encerrado. Na implementação da IDS, a profundidade máxima foi definida como $W*H$.
+Presume-se que sempre existe um caminho de A (início) para B (objetivo). Caso algum desses nós tenha custo infinito, o programa é encerrado. Na implementação da IDS, a profundidade máxima foi definida como $W*H$.
 
 // • Especificação das heurísticas utilizadas. Elas são admissíveis? Por quê?
 = Heurísticas <heu>
@@ -125,7 +125,7 @@ Há, ainda, a questão do _overhead_, que pode ter influenciado na análise de t
 
 O número de estados expandidos não pode ser obtido diretamente da saída esperada do programa. É possível _plotar_ o caminho, mas isso limita significativamente o poder de análise. Por exemplo, usando apenas a comparação do caminho, os algoritmos UCS e A\* são indistinguíveis, pois ambos sempre são ótimos. Tendo isso em vista, essa seção possui uma breve análise preliminar, que foca em algumas execuções específicas, comparando os caminhos.
 
-Depois, é introduzida uma variação do programa, que rastreia quais estados foram expandidos, permitindo extrair sua totalidade. Como essa operação introduz um certo _overhead_ e é incompatível com a saída especificada para o programa, essa variação foi considerada exclusiva desta análise.
+Depois, é introduzida uma variação do programa, que rastreia quais estados foram expandidos, permitindo extrair sua totalidade. Como essa operação introduz um certo _overhead_ e é incompatível com a saída especificada para o programa, essa variação foi considerada exclusiva desta análise (por isso ela não foi mencionada na seção anterior).
 
 === Caminhos <paths>
 
@@ -149,7 +149,7 @@ A ordem das ações acaba impactando em alguns dos outros algoritmos também, ma
 
 Para finalizar, a análise de estados explorados. Como mencionado no início da seção, foi feita uma modificação no programa, para que ele pudesse produzir dados mais relevantes para esta análise. Em suma, a modificação troca o custo da solução pela quantidade de estados explorados e o caminho gerado por uma lista com todos os nós visitados. Novamente, a IDS introduz certa dificuldade: o mesmo nó é visitado diversas vezes, o que contribui consideravelmente para seu tempo de execução. No entanto, a abordagem de somente contar os nós visitados não é capaz de detectar isso.
 
-Além disso, em outros algoritmos, como a UCS e o A\*, também podem acontecer repetições. No entanto, nesta seção preferiu-se apenas comparar os nós visitados, porque algumas conclusões importantes já foram deduzidas nas outras análises: independentemente das repetições, a IDS visita muito mais nós (ver @paths-back). De fato, as questões ainda não respondidas podem ser exploradas justamente a partir da exploração da quantidade "líquida" de estados visitados.
+Além disso, no A\* também podem acontecer repetições. Apesar disso, nesta seção preferiu-se apenas comparar os nós visitados, porque algumas conclusões importantes já foram deduzidas nas outras análises: independentemente das repetições, a IDS visita muito mais nós (ver @paths-back). De fato, as questões ainda não respondidas podem ser exploradas justamente a partir da exploração da quantidade "líquida" de estados visitados.
 
 Por exemplo: o quão melhor é o A\* em relação à UCS? A partir da discussão na @paths, não era possível extrair uma resposta. Para responder a essa pergunta, o experimento da @paths foi repetido com a modificação proposta aqui. O resultado para os caminhos "base" é exibido na @visited-ucs-astar. Em termos absolutos, o A\* visitou 8078 estados, enquanto a UCS visitou um total de 23367 estados. Ou seja, nesse caso específico, a busca do A\* visitou aproximadamente $1/3$ dos estados da busca da UCS.
 
@@ -160,7 +160,7 @@ Por exemplo: o quão melhor é o A\* em relação à UCS? A partir da discussão
 
 De forma mais geral, os experimentos da seção de tempo (@time) foram repetidos e os gráficos, com a contagem de estados visitados, podem ser encontrados nas figuras a seguir.
 
-Primeiramente, no mapa Cidade, fica evidente a eficiência do _Greedy_, que visita pouquíssimos estados. Na maioria dos casos, o A\* deixa a busca bem mais rápida que o UCS, como avaliado na @visited-ucs-astar. No entanto, para as instâncias maiores, o ganho é pequeno. Não foi encontrada uma explicação para o fato de a BFS e a UCS possuírem curvas tão semelhantes. Outro caso interessante foi a IDS ter uma redução tão drástica na maior busca (para o caminho de "ida").
+Primeiramente, no mapa Cidade, fica evidente a eficiência do _Greedy_, que visita pouquíssimos estados. Na maioria dos casos, o A\* deixa a busca bem mais rápida que o UCS, como avaliado na @visited-ucs-astar. No entanto, para as instâncias maiores, o ganho é pequeno. Não foi encontrada uma explicação para o fato de a BFS e a UCS possuírem curvas tão semelhantes. Outra situação interessante foi a IDS ter uma redução tão drástica na maior busca (para o caminho de "ida").
 
 #figure(
   image("plots/city-visited-base.png"),
@@ -186,4 +186,4 @@ Comparando-se ambos os gráficos, é possível observar que quase todos os algor
 
 Fica clara a relação entre o tempo de execução e o número de estados expandidos: na @ids-time-forest, observou-se que para a execução de distância 63, o tempo de execução foi particularmente elevado. Nas figuras acima, é possível notar que neste caso, a maioria dos algoritmos explora "desproporcionalmente" o espaço de busca (especialmente na "volta").
 
-Tal qual no outro mapa, UCS e BFS são muito próximas em termos de estados explorados. Vale notar que os algoritmos tem um comportamento consistente no caso base e que a análise de mais pontos poderia ser interessante suavizar o formato "ondular" do gráfico. Para o caminho reverso é mais complicado de se extrair informações: tanto a UCS como a BFS atingem um pico logo no início, e ficam por volta dele, mas cada um dos outros algoritmos é diferente. Para o _Greedy_, por exemplo, o maior "contorno" que o algoritmo teve que fazer, provavelmente estava na primeira metade da busca. Já o A\* tem um comportamento semelhante ao outro mapa, com rendimentos decrescentes.
+Tal qual no outro mapa, UCS e BFS são muito próximas em termos de estados explorados. Vale notar que os algoritmos tem um comportamento consistente no caso base e que a análise de mais pontos poderia ser interessante suavizar o formato "ondular" do gráfico. Para o caminho reverso é mais complicado de se extrair informações: tanto a UCS como a BFS atingem um pico logo no início, e ficam por volta dele, mas cada um dos outros algoritmos é diferente. Para o _Greedy_, por exemplo, o maior "contorno" que o algoritmo teve que fazer, provavelmente estava na primeira metade da busca. Já o A\* tem um comportamento semelhante ao outro mapa, com rendimentos decrescentes (em relação à UCS).
