@@ -7,7 +7,7 @@ Path ucs(matrix<double> &M, coords &init, coords &goal) {
     matrix<double> cost(W, vector<double>(H, INF));
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
-    pq.push({0.0, {init}});
+    pq.emplace(0.0, init);
     cost.at(init.fi).at(init.se) = 0.0;
 
     while (!pq.empty()) {
