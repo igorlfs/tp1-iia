@@ -37,7 +37,7 @@ inline vector<coords> rebuild_path(coords goal, coords init, matrix<coords> &par
         step = parent.at(step.fi).at(step.se);
     }
 
-    reverse(path.begin(), path.end());
+    ranges::reverse(path.begin(), path.end());
 
     return path;
 }
