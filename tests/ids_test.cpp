@@ -18,12 +18,10 @@ TEST(dls, InitEqualsGoal) {
 
     auto path = dls(m, init, goal, 0);
 
-    constexpr double expected_cost = 0.0;
     const vector<coords> expected_path = {};
 
     EXPECT_TRUE(path.has_value());
-    EXPECT_EQ(path->second, expected_cost);
-    EXPECT_EQ(path->first, expected_path);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(dls, cantFindDeepGoal) {
@@ -55,12 +53,10 @@ TEST(dls, canFindDepthOne) {
 
     auto path = dls(m, init, goal, 1);
 
-    constexpr double expected_cost = 1.0;
     const vector<coords> expected_path = {{1, 2}};
 
     EXPECT_TRUE(path.has_value());
-    EXPECT_EQ(path->second, expected_cost);
-    EXPECT_EQ(path->first, expected_path);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(dls, canFindDepthTwo) {
@@ -76,12 +72,10 @@ TEST(dls, canFindDepthTwo) {
 
     auto path = dls(m, init, goal, 2);
 
-    constexpr double expected_cost = 2.5;
     const vector<coords> expected_path = {{1, 0}, {2, 0}};
 
     EXPECT_TRUE(path.has_value());
-    EXPECT_EQ(path->second, expected_cost);
-    EXPECT_EQ(path->first, expected_path);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(dls, canDodgeObstacle) {
@@ -97,12 +91,10 @@ TEST(dls, canDodgeObstacle) {
 
     auto path = dls(m, init, goal, 4);
 
-    constexpr double expected_cost = 4.5;
     const vector<coords> expected_path = {{2, 0}, {2, 1}, {2, 2}, {1, 2}};
 
     EXPECT_TRUE(path.has_value());
-    EXPECT_EQ(path->second, expected_cost);
-    EXPECT_EQ(path->first, expected_path);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(dls, pathIsReconstructedCorrectly) {
@@ -120,12 +112,10 @@ TEST(dls, pathIsReconstructedCorrectly) {
     auto path = dls(m, init, goal, 4);
 
     constexpr int expected_depth = 4;
-    constexpr double expected_cost = 4.;
     const vector<coords> expected_path = {{1, 0}, {1, 1}, {1, 2}, {1, 3}};
 
-    EXPECT_EQ(path->second, expected_cost);
-    EXPECT_EQ(path->first, expected_path);
-    EXPECT_EQ(path->first.size(), expected_depth);
+    EXPECT_EQ(path, expected_path);
+    EXPECT_EQ(path->size(), expected_depth);
 }
 
 TEST(dls, orderOfDirectionsMayCausePathToNotBeFound) {
@@ -158,12 +148,10 @@ TEST(dls, pathIsEventuallyFoundInSpiteOfOrderOfDirections) {
 
     auto path = dls(m, init, goal, 6);
 
-    constexpr double expected_cost = 6;
     const vector<coords> expected_path = {{1, 0}, {2, 0}, {2, 1}, {2, 2}, {1, 2}, {1, 3}};
 
     EXPECT_TRUE(path.has_value());
-    EXPECT_EQ(path->second, expected_cost);
-    EXPECT_EQ(path->first, expected_path);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(ids, pathIsFoundIfItExists) {
@@ -177,13 +165,11 @@ TEST(ids, pathIsFoundIfItExists) {
         {1., 1., 1., INF},
     };
 
-    constexpr double expected_cost = 4.;
     const vector<coords> expected_path = {{1, 0}, {1, 1}, {1, 2}, {1, 3}};
 
-    Path path = ids(m, init, goal);
+    vector<coords> path = ids(m, init, goal);
 
-    EXPECT_EQ(path.second, expected_cost);
-    EXPECT_EQ(path.first, expected_path);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(ids, Simple) {
@@ -196,12 +182,10 @@ TEST(ids, Simple) {
     coords init = {1, 1};
     coords goal = {3, 1};
 
-    constexpr double expected_cost = 7.0;
-    const vector<coords> expected_path = {{1, 1}, {2, 1}, {3, 1}};
+    const vector<coords> expected_path = {{2, 1}, {3, 1}};
 
-    Path path = ids(m, init, goal);
-
-    EXPECT_EQ(expected_cost, path.second);
+    vector<coords> path = ids(m, init, goal);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(ids, Death) {

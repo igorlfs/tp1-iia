@@ -1,6 +1,6 @@
 #include "ids.hpp"
 
-Path ids(matrix<double> &M, coords &init, coords &goal) {
+vector<coords> ids(matrix<double> &M, coords &init, coords &goal) {
     int upper_bound_search_depth = W * H;
 
     for (int depth = 0; depth <= upper_bound_search_depth; depth++) {
@@ -12,7 +12,7 @@ Path ids(matrix<double> &M, coords &init, coords &goal) {
     throw runtime_error(NO_PATH_FOUND_MESSAGE);
 }
 
-optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth) {
+optional<vector<coords>> dls(matrix<double> &M, coords &init, coords &goal, int max_depth) {
     stack<pair<int, coords>> stk;
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
@@ -24,14 +24,7 @@ optional<Path> dls(matrix<double> &M, coords &init, coords &goal, int max_depth)
 
         // We might have hit the goal
         if (node == goal) {
-            vector<coords> path = rebuild_path(goal, init, parent);
-
-            double path_cost =
-                accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
-                    return sum + M.at(step.fi).at(step.se);
-                });
-
-            return make_pair(path, path_cost);
+            return rebuild_path(goal, init, parent);
         }
 
         // If the current node isn't the goal but the depth threshold was hit, we should backtrack

@@ -19,12 +19,11 @@ TEST(ucs, Simple) {
 
     assert(goal.fi < W && goal.se < H);
 
-    constexpr double expected_cost = 4.5;
-    const vector<coords> expected_path = {{1, 1}, {1, 2}, {2, 2}, {3, 2}, {3, 1}};
+    const vector<coords> expected_path = {{1, 2}, {2, 2}, {3, 2}, {3, 1}};
 
-    Path path = ucs(m, init, goal);
+    vector<coords> path = ucs(m, init, goal);
 
-    EXPECT_EQ(expected_cost, path.second);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(ucs, Death) {

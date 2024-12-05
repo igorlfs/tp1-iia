@@ -9,7 +9,6 @@ using namespace std;
 
 template <typename T> using matrix = vector<vector<T>>;
 using coords = pair<int, int>;
-using Path = pair<vector<coords>, double>;
 
 constexpr int INF = 0x3f3f3f3f;
 

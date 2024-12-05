@@ -2,7 +2,7 @@
 
 using State = pair<double, coords>; // {g + h, coords}
 
-Path astar(matrix<double> &M, coords &init, coords &goal) {
+vector<coords> astar(matrix<double> &M, coords &init, coords &goal) {
     priority_queue<State, vector<State>, greater<>> pq;
     matrix<double> cost(W, vector<double>(H, INF));
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
@@ -15,9 +15,7 @@ Path astar(matrix<double> &M, coords &init, coords &goal) {
         pq.pop();
 
         if (node == goal) {
-            vector<coords> path = rebuild_path(goal, init, parent);
-
-            return {path, current_f};
+            return rebuild_path(goal, init, parent);
         }
 
         int x = node.fi;

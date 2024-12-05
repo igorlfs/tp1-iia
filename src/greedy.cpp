@@ -2,7 +2,7 @@
 
 using State = pair<int, coords>; // {heuristic, coords}
 
-Path greedy(matrix<double> &M, coords &init, coords &goal) {
+vector<coords> greedy(matrix<double> &M, coords &init, coords &goal) {
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
     priority_queue<State, vector<State>, greater<>> pq;
 
@@ -13,14 +13,7 @@ Path greedy(matrix<double> &M, coords &init, coords &goal) {
         pq.pop();
 
         if (node == goal) {
-            vector<coords> path = rebuild_path(goal, init, parent);
-
-            double path_cost =
-                accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
-                    return sum + M.at(step.fi).at(step.se);
-                });
-
-            return {path, path_cost};
+            return rebuild_path(goal, init, parent);
         }
 
         int x = node.fi;

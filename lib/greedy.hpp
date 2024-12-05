@@ -2,4 +2,4 @@
 
 #include "common.hpp"
 
-Path greedy(matrix<double> &M, coords &init, coords &goal);
+vector<coords> greedy(matrix<double> &M, coords &init, coords &goal);

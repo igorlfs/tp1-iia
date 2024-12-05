@@ -14,12 +14,11 @@ TEST(greedy, Simple) {
     coords init = {1, 1};
     coords goal = {3, 1};
 
-    constexpr double expected_cost = 7.0;
-    const vector<coords> expected_path = {{1, 1}, {2, 1}, {3, 1}};
+    const vector<coords> expected_path = {{2, 1}, {3, 1}};
 
-    Path path = greedy(m, init, goal);
+    vector<coords> path = greedy(m, init, goal);
 
-    EXPECT_EQ(expected_cost, path.second);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(greedy, Death) {

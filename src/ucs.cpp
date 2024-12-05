@@ -2,7 +2,7 @@
 
 using State = pair<double, coords>;
 
-Path ucs(matrix<double> &M, coords &init, coords &goal) {
+vector<coords> ucs(matrix<double> &M, coords &init, coords &goal) {
     priority_queue<State, vector<State>, greater<>> pq;
     matrix<double> cost(W, vector<double>(H, INF));
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
@@ -15,9 +15,7 @@ Path ucs(matrix<double> &M, coords &init, coords &goal) {
         pq.pop();
 
         if (node == goal) {
-            vector<coords> path = rebuild_path(goal, init, parent);
-
-            return {path, current_cost};
+            return rebuild_path(goal, init, parent);
         }
 
         int x = node.fi;

@@ -19,12 +19,11 @@ TEST(bfs, Simple) {
 
     assert(goal.fi < W && goal.se < H);
 
-    constexpr double expected_cost = 7.0;
-    const vector<coords> expected_path = {{1, 1}, {2, 1}, {3, 1}};
+    const vector<coords> expected_path = {{2, 1}, {3, 1}};
 
-    Path path = bfs(m, init, goal);
+    vector<coords> path = bfs(m, init, goal);
 
-    EXPECT_EQ(expected_cost, path.second);
+    EXPECT_EQ(path, expected_path);
 }
 
 TEST(bfs, Death) {

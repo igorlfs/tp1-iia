@@ -8,7 +8,7 @@ constexpr short NUM_ARGS = 7;
 
 int W, H;
 
-using AlgorithmFunc = function<Path(matrix<double> &, coords &, coords &)>;
+using AlgorithmFunc = function<vector<coords>(matrix<double> &, coords &, coords &)>;
 
 static const unordered_map<string, AlgorithmFunc> ALGORITHMS = {
     {"BFS", bfs}, {"IDS", ids}, {"UCS", ucs}, {"Greedy", greedy}, {"Astar", astar}};
@@ -41,10 +41,10 @@ matrix<double> read_matrix(ifstream &input_file) {
     return M;
 }
 
-void print_path(Path &path, coords init) {
-    cout << fixed << showpoint << setprecision(1) << path.se;
+void print_path(vector<coords> &path, double cost, coords init) {
+    cout << fixed << showpoint << setprecision(1) << cost;
     cout << " (" << init.fi << "," << init.se << ")";
-    for (const auto &cell : path.fi) {
+    for (const auto &cell : path) {
         cout << " (" << cell.fi << "," << cell.se << ")";
     }
     cout << '\n';
@@ -68,9 +68,13 @@ int main(int argc, char *argv[]) {
     assert(M.at(init.fi).at(init.se) != INF);
     assert(M.at(goal.fi).at(goal.se) != INF);
 
-    Path path = ALGORITHMS.at(args.at(2))(M, init, goal);
+    vector<coords> path = ALGORITHMS.at(args.at(2))(M, init, goal);
 
-    print_path(path, init);
+    double cost = accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
+        return sum + M.at(step.fi).at(step.se);
+    });
+
+    print_path(path, cost, init);
 
     return 0;
 }

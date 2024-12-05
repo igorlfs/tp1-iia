@@ -1,6 +1,6 @@
 #include "bfs.hpp"
 
-Path bfs(matrix<double> &M, coords &init, coords &goal) {
+vector<coords> bfs(matrix<double> &M, coords &init, coords &goal) {
     queue<coords> q;
     matrix<coords> parent(W, vector<coords>(H, UNVISITED));
 
@@ -11,14 +11,7 @@ Path bfs(matrix<double> &M, coords &init, coords &goal) {
         q.pop();
 
         if (node == goal) {
-            vector<coords> path = rebuild_path(goal, init, parent);
-
-            double path_cost =
-                accumulate(path.begin(), path.end(), 0.0, [&M](double sum, const auto &step) {
-                    return sum + M.at(step.fi).at(step.se);
-                });
-
-            return {path, path_cost};
+            return rebuild_path(goal, init, parent);
         }
 
         int x = node.fi;
